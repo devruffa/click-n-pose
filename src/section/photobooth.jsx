@@ -104,10 +104,10 @@ function Photobooth() {
             width = 400;
             height = 1200;
             blackBottomHeight = 100;
-            padding = 15;
+            padding = 25;
             rows = 4;
             cols = 1;
-            aspectRatio = 3 / 2.1;
+            aspectRatio = 3 / 2.2;
         } else if (format === "6x4x6") {
             width = 800;
             height = 1200;
