@@ -1,8 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { HelpCircle } from "lucide-react"; 
 import Footer from "./footer"; 
-import Photobooth from "./photobooth"; 
 
 function Home() {
     const navigate = useNavigate();
@@ -20,7 +19,7 @@ function Home() {
 
                 <button
                     onClick={() => navigate("/photobooth")}
-                    className=" px-12 py-3 text-xs font-bold border-2 border-black rounded-full hover:bg-gray-300 transition">
+                    className="px-12 py-3 text-xs font-bold border-2 border-black rounded-full hover:bg-gray-300 transition">
                     START
                 </button>
             </div>
@@ -30,15 +29,4 @@ function Home() {
     );
 }
 
-function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/photobooth" element={<Photobooth />} />
-            </Routes>
-        </Router>
-    );
-}
-
-export default App;
+export default Home;
