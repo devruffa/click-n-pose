@@ -175,11 +175,11 @@ function Photobooth() {
 
     
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 ">
             <div>
-                <img src="images/click-n-pose.png" className="-mt-12 w-48" alt="" />
+                <img src="images/click-n-pose.png" className="w-36" alt="" />
             </div>
-            <div className="relative w-full max-w-lg aspect-[4/3] rounded-lg shadow-lg">
+            <div className="relative w-full lg:max-w-lg sm:max-w-lg md:max-w-sm  aspect-[4/3] rounded-lg shadow-lg">
                 <Webcam
                     ref={webcamRef}
                     screenshotFormat="image/png"
@@ -210,7 +210,7 @@ function Photobooth() {
                 <div className="bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-lg text-center w-full max-w-md sm:max-w-lg md:max-w-xl">
                     {step === 1 && (
                         <>
-                            <div className="p-4 md:p-6">
+                            <div className="p-4">
                                 <h2 className="text-xs md:text-sm font-bold mb-4 uppercase">Select Number of Photos</h2>
                                 <div className="flex flex-wrap justify-center gap-2 md:gap-4">
                                     {[3, 4, 6].map((num) => (
@@ -225,7 +225,7 @@ function Photobooth() {
                                         
                                             localStorage.setItem("photoFormat", format);
                                         }}>
-                                            <img src={`/images/${num}.png`} alt={`${num} Photos`} className="w-32 md:w-48 lg:w-48 rounded-md shadow-md hover:opacity-80" />
+                                            <img src={`/images/${num}.png`} alt={`${num} Photos`} className="w-32 md:w-32 lg:w-48 rounded-md shadow-md hover:opacity-80" />
                                         </button>
                                         
                                     ))}
@@ -251,6 +251,7 @@ function Photobooth() {
                                     <button onClick={() => { setTimer(10); setStep(3); }}>
                                         <p className="w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 flex items-center justify-center rounded-md shadow-lg hover:opacity-80">10 sec.</p>
                                     </button>
+
 
                                 </div>
                             </div>

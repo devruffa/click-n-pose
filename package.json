@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@flaticon/flaticon-uicons": "^3.3.1",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "html2canvas": "^1.4.1",
     "install": "^0.13.0",
     "lucide-react": "^0.476.0",
