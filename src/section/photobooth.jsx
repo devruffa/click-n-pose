@@ -95,24 +95,24 @@ function Photobooth() {
         if (format === "3x2x6") {
             width = 400;
             height = 1200;
-            blackBottomHeight = 250;
-            padding = 15;
+            blackBottomHeight = 240;
+            padding = 30;
             rows = 3;
             cols = 1;
             aspectRatio = 4 / 3;
         } else if (format === "4x2x6") {
             width = 400;
             height = 1200;
-            blackBottomHeight = 100;
-            padding = 25;
+            blackBottomHeight = 80;
+            padding = 20;
             rows = 4;
             cols = 1;
-            aspectRatio = 3 / 2.2;
+            aspectRatio = 3 / 3;
         } else if (format === "6x4x6") {
             width = 800;
             height = 1200;
             blackBottomHeight = 150;
-            padding = 15;
+            padding = 30;
             rows = 3;
             cols = 2;
             aspectRatio = 4 / 3;
@@ -129,10 +129,9 @@ function Photobooth() {
         photoWidth = (width - (cols + 1) * padding) / cols;
         photoHeight = photoWidth / aspectRatio;
 
-        // Ensure total height (including padding and blackBottomHeight) fits within canvas height
         if (rows * (photoHeight + padding) + blackBottomHeight > height) {
             photoHeight = (height - blackBottomHeight - (rows + 1) * padding) / rows;
-            photoWidth = (width - (cols + 1) * padding) / cols; // Ensure width is properly distributed
+            photoWidth = (width - (cols + 1) * padding) / cols; 
         }
         
 
@@ -178,7 +177,7 @@ function Photobooth() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
             <div>
-                <img src="images/click-n-pose.png" className="-mt-12 w-36" alt="" />
+                <img src="images/click-n-pose.png" className="-mt-12 w-48" alt="" />
             </div>
             <div className="relative w-full max-w-lg aspect-[4/3] rounded-lg shadow-lg">
                 <Webcam
@@ -207,88 +206,96 @@ function Photobooth() {
 
             {/* Modal for Setup */}
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 md:px-4">
-                    <div className="bg-white p-6 rounded-lg shadow-lg text-center p-14">
-                        {step === 1 && (
-                            <>
-                            <div className="p-8">
-                                <h2 className="text-sm font-bold mb-4 uppercase">Select Number of Photos</h2>
-                                <div className="flex justify-center gap-4">
-                                    <button onClick={() => { setNumPhotos(3); setStep(2); }}>
-                                        <img src="/images/3.png" alt="3 Photos" className="w-48 rounded-md shadow-md hover:opacity-80" />
-                                    </button>
-                                    <button onClick={() => { setNumPhotos(4); setStep(2); }}>
-                                        <img src="/images/4.png" alt="4 Photos" className="w-48 rounded-md shadow-md hover:opacity-80" />
-                                    </button>
-                                    <button onClick={() => { setNumPhotos(6); setStep(2); }}>
-                                        <img src="/images/6.png" alt="6 Photos" className="w-48 rounded-md shadow-md hover:opacity-80" />
-                                    </button>
-                                </div>
-                                </div>
-                            </>
-                        )}
-
-                        {step === 2 && (
-                            <>
-                            <div className="p-8">
-                                <h2 className="text-sm font-bold mb-4 uppercase">Select Timer</h2>
-                                <div className="flex items-center justify-center">
-                                    <div className="flex justify-center gap-4">
-                                        <button onClick={() => { setTimer(0); setStep(3); }}>
-                                            <p className="w-32 h-32 flex items-center justify-center rounded-md shadow-md hover:opacity-80 bg-gray-200">0</p>
+               <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-2 md:px-4">
+                <div className="bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-lg text-center w-full max-w-md sm:max-w-lg md:max-w-xl">
+                    {step === 1 && (
+                        <>
+                            <div className="p-4 md:p-6">
+                                <h2 className="text-xs md:text-sm font-bold mb-4 uppercase">Select Number of Photos</h2>
+                                <div className="flex flex-wrap justify-center gap-2 md:gap-4">
+                                    {[3, 4, 6].map((num) => (
+                                        <button key={num} onClick={() => { 
+                                            setNumPhotos(num); 
+                                            setStep(2);
+                                        
+                                            let format = "";
+                                            if (num === 3) format = "3x2x6";
+                                            else if (num === 4) format = "4x2x6";
+                                            else if (num === 6) format = "6x4x6";
+                                        
+                                            localStorage.setItem("photoFormat", format);
+                                        }}>
+                                            <img src={`/images/${num}.png`} alt={`${num} Photos`} className="w-32 md:w-48 lg:w-48 rounded-md shadow-md hover:opacity-80" />
                                         </button>
-                                        <button onClick={() => { setTimer(3); setStep(3); }}>
-                                            <p className="w-32 h-32 flex items-center justify-center rounded-md shadow-md hover:opacity-80 bg-gray-200">3</p>
-                                        </button>
-                                        <button onClick={() => { setTimer(5); setStep(3); }}>
-                                            <p className="w-32 h-32 flex items-center justify-center rounded-md shadow-md hover:opacity-80 bg-gray-200">5</p>
-                                        </button>
-                                        <button onClick={() => { setTimer(10); setStep(3); }}>
-                                            <p className="w-32 h-32 flex items-center justify-center rounded-md shadow-md hover:opacity-80 bg-gray-200">10</p>
-                                        </button>
-                                    </div>
+                                        
+                                    ))}
                                 </div>
                             </div>
-                            </>
-                        )}
+                        </>
+                    )}
 
-                        {step === 3 && (
-                            <>
-                            <div className="p-8">
-                                <h2 className="text-sm font-bold mb-4 uppercase">Select Filter</h2>
-                                <div className="flex justify-center gap-4">
+                    {step === 2 && (
+                        <>
+                            <div className="p-4 md:p-6">
+                                <h2 className="text-xs md:text-sm font-bold mb-4 uppercase">Select Timer</h2>
+                                <div className="flex flex-wrap justify-center gap-2 md:gap-4">
+                                     <button onClick={() => { setTimer(0); setStep(3); }}>
+                                        <p className="w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 flex items-center justify-center rounded-md shadow-lg hover:opacity-80">None</p>
+                                    </button>
+                                    <button onClick={() => { setTimer(3); setStep(3); }}>
+                                        <p className="w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 flex items-center justify-center rounded-md shadow-lg hover:opacity-80">3 sec.</p>
+                                    </button>
+                                    <button onClick={() => { setTimer(5); setStep(3); }}>
+                                        <p className="w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 flex items-center justify-center rounded-md shadow-lg hover:opacity-80">5 sec.</p>
+                                    </button>
+                                    <button onClick={() => { setTimer(10); setStep(3); }}>
+                                        <p className="w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 flex items-center justify-center rounded-md shadow-lg hover:opacity-80">10 sec.</p>
+                                    </button>
+
+                                    
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {step === 3 && (
+                        <>
+                            <div className="p-4 md:p-6">
+                                <h2 className="text-xs md:text-sm font-bold mb-4 uppercase">Select Filter</h2>
+                                <div className="flex flex-wrap justify-center gap-2 md:gap-4">
                                     {filters.map((f) => (
                                         <button
                                             key={f.value}
                                             onClick={() => { setFilter(f.value); setStep(4); }}
-                                            className="relative w-32 h-32 rounded-lg overflow-hidden shadow-md hover:opacity-80">
-                                            {/* Separate Webcam for Preview */}
+                                            className="relative w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-lg overflow-hidden shadow-md hover:opacity-80">
                                             <Webcam
                                                 className="absolute inset-0 w-full h-full object-cover"
                                                 videoConstraints={videoConstraints}
                                                 style={{ filter: f.value }}
                                                 mirrored={videoConstraints.facingMode === "user"}
                                             />
-                                            <div className="absolute bottom-0 bg-black bg-opacity-50 text-white w-full text-center text-sm py-1">
+                                            <div className="absolute bottom-0 bg-black bg-opacity-50 text-white w-full text-center text-xs md:text-sm py-1">
                                                 {f.name}
                                             </div>
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                            </>
-                        )}
+                        </>
+                    )}
 
-                        {step === 4 && (
-                            <>
-                                <h2 className="text-lg font-bold mb-4">Ready to Capture?</h2>
-                                <button onClick={startCaptureSequence} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                                    Start Capture
-                                </button>
-                            </>
-                        )}
-                    </div>
+                    {step === 4 && (
+                        <>
+                        <div className="p-4 md:p-6">
+                            <h2 className="text-base md:text-lg font-bold mb-4">Ready to Capture?</h2>
+                            <button onClick={startCaptureSequence} className="px-2 py-1 md:px-6 md:py-2 uppercase border-2 border-black rounded-full hover:bg-green-200 transition text-xs">
+                                Start Capture
+                            </button>
+                        </div>
+                        </>
+                    )}
                 </div>
+            </div>
             )}
 
             {images.length > 0 && (
@@ -314,31 +321,9 @@ function Photobooth() {
                             setStep(1); // Reset the modal steps
                             setIsModalOpen(true); // Reopen the modal
                         }}
-                        className="px-6 py-2 border-2 border-black rounded-full transition uppercase text-sm">
-                        Retake
+                        className="px-6 py-2 border-2 border-black rounded-full transition uppercase text-sm hover:bg-green-200">
+                        <p className="text-xs">Retake</p>
                     </button>
-                    
-                
-                    
-                    {/* <button 
-                        onClick={() => createPhotoStrip("3x2x6")}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                        3-Pic (2x6)
-                    </button>
-
-                    <button 
-                        onClick={() => createPhotoStrip("4x2x6")}
-                        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                        4-Pic (2x6)
-                    </button>
-
-                    <button 
-                        onClick={() => createPhotoStrip("6x4x6")}
-                        className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition">
-                        6-Pic (4x6)
-                    </button> */}
-
-
 
                     <button 
                         onClick={() => {
@@ -360,8 +345,8 @@ function Photobooth() {
                                 alert("Invalid number of images for formatting.");
                             }
                         }}
-                        className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
-                        Preview
+                        className="px-5 py-2 border-2 border-black rounded-full transition uppercase text-sm hover:bg-green-200">
+                        <p className="text-xs">Preview</p>
                     </button>
 
 
