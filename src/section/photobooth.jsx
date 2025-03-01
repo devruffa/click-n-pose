@@ -103,7 +103,7 @@ function Photobooth() {
         } else if (format === "4x2x6") {
             width = 400;
             height = 1200;
-            blackBottomHeight = 80;
+            blackBottomHeight = 70;
             padding = 20;
             rows = 4;
             cols = 1;
@@ -252,7 +252,6 @@ function Photobooth() {
                                         <p className="w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 flex items-center justify-center rounded-md shadow-lg hover:opacity-80">10 sec.</p>
                                     </button>
 
-                                    
                                 </div>
                             </div>
                         </>
@@ -266,7 +265,7 @@ function Photobooth() {
                                     {filters.map((f) => (
                                         <button
                                             key={f.value}
-                                            onClick={() => { setFilter(f.value); setStep(4); }}
+                                            onClick={() => { setFilter(f.value); startCaptureSequence(); }}
                                             className="relative w-32 h-32 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-lg overflow-hidden shadow-md hover:opacity-80">
                                             <Webcam
                                                 className="absolute inset-0 w-full h-full object-cover"
@@ -284,16 +283,7 @@ function Photobooth() {
                         </>
                     )}
 
-                    {step === 4 && (
-                        <>
-                        <div className="p-4 md:p-6">
-                            <h2 className="text-base md:text-lg font-bold mb-4">Ready to Capture?</h2>
-                            <button onClick={startCaptureSequence} className="px-2 py-1 md:px-6 md:py-2 uppercase border-2 border-black rounded-full hover:bg-green-200 transition text-xs">
-                                Start Capture
-                            </button>
-                        </div>
-                        </>
-                    )}
+                    
                 </div>
             </div>
             )}

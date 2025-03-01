@@ -18,9 +18,13 @@ function PhotoPreview() {
 
     const stickerOptions = {
         "3x2x6": [
-            "images/sticker/sparkle.png",
-            "images/sticker/Cat.png",
-            "images/sticker/Pink.png",
+            "/images/sticker/3x2x6/none.png",
+            "images/sticker/3x2x6/1.png",
+            "images/sticker/3x2x6/2.png",
+            "images/sticker/3x2x6/3.png",
+            "images/sticker/3x2x6/4.png",
+            "images/sticker/3x2x6/6.png",
+
         ],
         // "4x2x6": [],
         "6x4x6": [
@@ -32,14 +36,17 @@ function PhotoPreview() {
 
     const colorOptions = {
         "3x2x6": [
-            "/images/color/3x2x6/Green.png",
-            "/images/color/3x2x6/Pink.png",
-            "/images/color/3x2x6/Purple.png",
-            "/images/color/3x2x6/Yellow.png",
-            "/images/color/3x2x6/Purple.png",
-            "/images/color/3x2x6/Yellow.png",
+            "/images/color/3x2x6/none.png",
 
-            
+            "/images/color/3x2x6/1.png",
+            "/images/color/3x2x6/2.png",
+            "/images/color/3x2x6/3.png",
+            "/images/color/3x2x6/4.png", 
+            "/images/color/3x2x6/5.png",   
+            "/images/color/3x2x6/6.png",      
+            "/images/color/3x2x6/7.png",      
+            "/images/color/3x2x6/8.png",      
+            "/images/color/3x2x6/9.png",      
         ],
     };
 
@@ -71,7 +78,7 @@ function PhotoPreview() {
     
             const renderExtras = () => {
                 if (isDateEnabled) {
-                    ctx.font = "24px monospace"; // Match the font-mono, text-xs
+                    ctx.font = "24px monospace"; 
                     ctx.textAlign = "center";
                     ctx.fillText(new Date().toISOString().split("T")[0], canvas.width / 2, canvas.height - 40);
                 }
@@ -81,9 +88,9 @@ function PhotoPreview() {
                     logo.src = "images/click-n-pose.png";
                     logo.crossOrigin = "anonymous";
                     logo.onload = () => {
-                        const logoWidth = 390.75; // Approximate "w-40"
-                        const logoHeight = 179.25; // Keep aspect ratio
-                        const marginBottom = 100; // Add margin from the bottom
+                        const logoWidth = 390.75; 
+                        const logoHeight = 179.25; 
+                        const marginBottom = 100; 
                         ctx.drawImage(logo, (canvas.width - logoWidth) / 2, canvas.height - logoHeight - marginBottom, logoWidth, logoHeight);
                         saveCanvas();
                     };
@@ -138,7 +145,7 @@ function PhotoPreview() {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            <div className="m-2 w-1/3 max-h-screen p-4 bg-white shadow-lg rounded-lg overflow-y-auto">
+            <div className="m-2 w-1/2 h-[98vh] p-4 bg-white shadow-lg rounded-lg overflow-y-auto">
                 <div className="flex items-center justify-center mb-4">
                     <img src="images/click-n-pose.png" className=" w-32" alt="" />
                 </div>
@@ -159,7 +166,7 @@ function PhotoPreview() {
                     )}
                 </div>
 
-                <h2 className="text-sm font-bold mt-6 mb-4 uppercase">Choose a Color Overlay</h2>
+                <h2 className="text-sm font-bold mt-6 mb-4 uppercase">Choose a Color</h2>
                 <div className="grid grid-cols-6 gap-2">
                     {photoFormat && colorOptions[photoFormat] ? (
                         colorOptions[photoFormat].map((color, index) => (
@@ -172,13 +179,13 @@ function PhotoPreview() {
                             />
                         ))
                     ) : (
-                        <p className="text-gray-500 text-xs">Color overlays not available.</p>
+                        <p className="text-gray-500 text-xs">Color not available.</p>
                     )}
                 </div>
 
                 <div className="flex items-center space-x-2">
 
-                    <h2 className="text-sm font-bold mt-6 mb-2 uppercase">Add a Date</h2>
+                    <h2 className="text-sm font-bold mt-6 mb-2 uppercase">Add Date</h2>
                         <Switch 
                             onChange={() => setIsDateEnabled(!isDateEnabled)} 
                             checked={isDateEnabled} 
@@ -211,14 +218,14 @@ function PhotoPreview() {
                             <img 
                                 src={photoStrip} 
                                 alt="Photo Strip Preview" 
-                                className="rounded-lg w-full h-auto max-h-[600px] object-contain"
+                                className=" max-h-[600px] border shadow-lg object-contain "
                             />
 
                             {selectedBg && (
                                 <img 
                                     src={selectedBg} 
                                     alt="Color Overlay"
-                                    className="absolute top-4 left-0 w-full max-h-[600px] object-contain pointer-events-none opacity-80"
+                                    className="absolute top-4 left-0 w-full max-h-[600px] rounded-lg object-contain pointer-events-none "
                                 />
                             )}
 
@@ -226,7 +233,7 @@ function PhotoPreview() {
                                 <img 
                                     src={selectedSticker} 
                                     alt="Sticker"
-                                    className="absolute top-4 left-0 w-full max-h-[600px] object-contain pointer-events-none"
+                                    className="absolute top-4 left-0 w-full max-h-[600px]  rounded-lg object-contain pointer-events-none"
                                 />
                             )}
 
