@@ -17,12 +17,8 @@ function Photobooth() {
     const [step, setStep] = useState(1);
     
 
-    const videoConstraints = {
-        width: { ideal: 1280 },
-        height: { ideal: 960 }, // Ensures a 4:3 aspect ratio
-        facingMode: "user",
-    };
-    
+    const videoConstraints = { facingMode: "user" };
+
     const startCaptureSequence = () => {
         setImages([]);
         setIsCaptured(false);
