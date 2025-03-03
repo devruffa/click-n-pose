@@ -151,7 +151,7 @@ function Photobooth() {
                 offCanvas.width = photoWidth;
                 offCanvas.height = photoHeight;
     
-                // Apply filter before drawing
+                // Apply the selected filter BEFORE drawing
                 offCtx.filter = filter;
                 offCtx.drawImage(img, 0, 0, photoWidth, photoHeight);
     
@@ -174,6 +174,7 @@ function Photobooth() {
         ctx.fillStyle = "white";
         ctx.fillRect(0, height - blackBottomHeight, width, blackBottomHeight);
     };
+    
     
     
     
