@@ -140,20 +140,28 @@ function Photobooth() {
     
         images.forEach((imgSrc, index) => {
             const img = new Image();
-            img.crossOrigin = "Anonymous"; // Ensures iOS can process the image
+            img.crossOrigin = "Anonymous";
             img.src = imgSrc;
     
             img.onload = () => {
+                // Create an offscreen canvas
+                const offCanvas = document.createElement("canvas");
+                const offCtx = offCanvas.getContext("2d");
+    
+                offCanvas.width = photoWidth;
+                offCanvas.height = photoHeight;
+    
+                // Apply filter before drawing
+                offCtx.filter = filter;
+                offCtx.drawImage(img, 0, 0, photoWidth, photoHeight);
+    
+                // Draw the processed image onto the main canvas
                 const col = index % cols;
                 const row = Math.floor(index / cols);
                 const x = padding + col * (photoWidth + padding);
                 const y = padding + row * (photoHeight + padding);
     
-                // ✅ Apply filter manually in canvas
-                ctx.save(); // Save current state
-                ctx.filter = filter; // Apply selected filter
-                ctx.drawImage(img, x, y, photoWidth, photoHeight);
-                ctx.restore(); // Restore context to avoid affecting future drawings
+                ctx.drawImage(offCanvas, x, y);
     
                 loadedImages++;
                 if (loadedImages === images.length) {
@@ -166,6 +174,7 @@ function Photobooth() {
         ctx.fillStyle = "white";
         ctx.fillRect(0, height - blackBottomHeight, width, blackBottomHeight);
     };
+    
     
     
     
