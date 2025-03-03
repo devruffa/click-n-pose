@@ -84,7 +84,6 @@ function Photobooth() {
         { name: "Invert", value: "invert(100%)" },
     ];
 
-
     const createPhotoStrip = (format) => {
         if (images.length === 0) return;
     
@@ -142,58 +141,42 @@ function Photobooth() {
             const img = new Image();
             img.crossOrigin = "Anonymous";
             img.src = imgSrc;
-        
+    
             img.onload = () => {
                 // Create an offscreen canvas
                 const offCanvas = document.createElement("canvas");
                 const offCtx = offCanvas.getContext("2d");
-        
+    
                 offCanvas.width = photoWidth;
                 offCanvas.height = photoHeight;
-        
-                // Draw the image onto the offscreen canvas
+    
+                // Apply filter manually before drawing
+                offCtx.filter = filter;
                 offCtx.drawImage(img, 0, 0, photoWidth, photoHeight);
-        
-                // Apply filter manually using CSS trick
-                if (filter !== "none") {
-                    const tempImg = new Image();
-                    tempImg.onload = () => {
-                        offCtx.clearRect(0, 0, photoWidth, photoHeight);
-                        offCtx.filter = filter; // Apply filter here
-                        offCtx.drawImage(tempImg, 0, 0, photoWidth, photoHeight);
-                        
-                        // Draw final image onto main canvas
-                        drawToMainCanvas(offCanvas, index);
-                    };
-                    tempImg.src = offCanvas.toDataURL(); // Convert offCanvas to new image
-                } else {
-                    drawToMainCanvas(offCanvas, index);
-                }
+    
+                // Get filtered image as new source
+                const tempImg = new Image();
+                tempImg.onload = () => {
+                    const col = index % cols;
+                    const row = Math.floor(index / cols);
+                    const x = padding + col * (photoWidth + padding);
+                    const y = padding + row * (photoHeight + padding);
+    
+                    ctx.drawImage(tempImg, x, y);
+    
+                    loadedImages++;
+                    if (loadedImages === images.length) {
+                        saveCanvas(canvas);
+                    }
+                };
+                tempImg.src = offCanvas.toDataURL(); // Ensures the filter is applied before drawing
             };
         });
-        
-        function drawToMainCanvas(offCanvas, index) {
-            const col = index % cols;
-            const row = Math.floor(index / cols);
-            const x = padding + col * (photoWidth + padding);
-            const y = padding + row * (photoHeight + padding);
-        
-            ctx.drawImage(offCanvas, x, y);
-        
-            loadedImages++;
-            if (loadedImages === images.length) {
-                saveCanvas(canvas);
-            }
-        }
     
         // Add bottom section
         ctx.fillStyle = "white";
         ctx.fillRect(0, height - blackBottomHeight, width, blackBottomHeight);
     };
-    
-    
-    
-    
     
 
     const saveCanvas = (canvas) => {
