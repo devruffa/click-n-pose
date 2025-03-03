@@ -155,8 +155,8 @@ function PhotoPreview() {
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
             <div className="w-full flex flex-col items-center justify-center p-4 ">
-                <p className="text-md font-bold mb-4 uppercase text-center">Photo Strip</p>
-                    <div className="relative max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl p-4 rounded-lg flex items-center justify-center">
+                <p className="lg:mt-0 md:mt-20 text-md font-bold mb-4 uppercase text-center">Photo Strip</p>
+                    <div className="relative  max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl p-4 rounded-lg flex items-center justify-center">
                         {photoStrip ? (
                             <>
                                 <img 
@@ -337,7 +337,7 @@ function PhotoPreview() {
 
         {/* start bottombar */}
 
-            <div className="fixed bottom-0 left-0 rounded-t-2xl right-0 bg-white shadow-md p-3 flex justify-around items-center lg:hidden">
+            <div className="fixed bottom-0 left-0 rounded-t-2xl right-0 bg-white shadow-lg p-3 flex justify-around items-center lg:hidden">
                 {/* Sticker Button */}
                 <button
                     onClick={() => {
