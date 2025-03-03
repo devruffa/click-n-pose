@@ -179,7 +179,7 @@ function Photobooth() {
             <div>
                 <img src="images/click-n-pose.png" className="w-36" alt="" />
             </div>
-            <div className="relative w-full lg:max-w-lg sm:max-w-lg md:max-w-sm  aspect-[4/3] rounded-lg shadow-lg">
+            <div className="relative w-full lg:max-w-lg sm:max-w-lg md:max-w-sm  lg:aspect-[4/3] md:aspect-[4/3] sm:aspect-[4/3] rounded-lg shadow-lg">
                 <Webcam
                     ref={webcamRef}
                     screenshotFormat="image/png"
