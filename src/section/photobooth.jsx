@@ -143,13 +143,22 @@ function Photobooth() {
             img.src = imgSrc;
     
             img.onload = () => {
+                // Create an offscreen canvas to apply the filter
+                const offCanvas = document.createElement("canvas");
+                const offCtx = offCanvas.getContext("2d");
+    
+                offCanvas.width = photoWidth;
+                offCanvas.height = photoHeight;
+    
+                offCtx.filter = filter; // Apply the selected filter
+                offCtx.drawImage(img, 0, 0, photoWidth, photoHeight);
+    
                 const col = index % cols;
                 const row = Math.floor(index / cols);
                 const x = padding + col * (photoWidth + padding);
                 const y = padding + row * (photoHeight + padding);
     
-                ctx.filter = filter; // Apply the filter directly before drawing
-                ctx.drawImage(img, x, y, photoWidth, photoHeight);
+                ctx.drawImage(offCanvas, x, y); // Draw filtered image onto main canvas
     
                 loadedImages++;
                 if (loadedImages === images.length) {
@@ -162,6 +171,7 @@ function Photobooth() {
         ctx.fillStyle = "white";
         ctx.fillRect(0, height - blackBottomHeight, width, blackBottomHeight);
     };
+    
     
     
 
