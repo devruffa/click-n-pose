@@ -55,7 +55,9 @@ function PhotoPreview() {
             "/images/color/3x2x6/6.png",      
             "/images/color/3x2x6/7.png",      
             "/images/color/3x2x6/8.png",      
-            "/images/color/3x2x6/9.png",      
+            "/images/color/3x2x6/9.png",  
+            "/images/color/3x2x6/10.png",      
+    
         ],
     };
 
