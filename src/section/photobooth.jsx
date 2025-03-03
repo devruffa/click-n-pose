@@ -130,41 +130,43 @@ function Photobooth() {
     
         photoWidth = (width - (cols + 1) * padding) / cols;
         photoHeight = photoWidth / aspectRatio;
-
+    
         if (rows * (photoHeight + padding) + blackBottomHeight > height) {
             photoHeight = (height - blackBottomHeight - (rows + 1) * padding) / rows;
-            photoWidth = (width - (cols + 1) * padding) / cols; 
+            photoWidth = (width - (cols + 1) * padding) / cols;
         }
-        
-
     
         let loadedImages = 0;
     
         images.forEach((imgSrc, index) => {
             const img = new Image();
+            img.crossOrigin = "Anonymous"; // Ensures iOS can process the image
             img.src = imgSrc;
+    
             img.onload = () => {
                 const col = index % cols;
                 const row = Math.floor(index / cols);
                 const x = padding + col * (photoWidth + padding);
                 const y = padding + row * (photoHeight + padding);
     
-                ctx.filter = filter;
+                // ✅ Apply filter manually in canvas
+                ctx.save(); // Save current state
+                ctx.filter = filter; // Apply selected filter
                 ctx.drawImage(img, x, y, photoWidth, photoHeight);
-                ctx.filter = "none"; // Reset filter after drawing
+                ctx.restore(); // Restore context to avoid affecting future drawings
     
                 loadedImages++;
                 if (loadedImages === images.length) {
-                    // Save canvas AFTER all images are drawn
                     saveCanvas(canvas);
                 }
             };
         });
     
-        // Add black bottom section
+        // Add bottom section
         ctx.fillStyle = "white";
         ctx.fillRect(0, height - blackBottomHeight, width, blackBottomHeight);
     };
+    
     
     
 
