@@ -143,33 +143,18 @@ function Photobooth() {
             img.src = imgSrc;
     
             img.onload = () => {
-                // Create an offscreen canvas
-                const offCanvas = document.createElement("canvas");
-                const offCtx = offCanvas.getContext("2d");
+                const col = index % cols;
+                const row = Math.floor(index / cols);
+                const x = padding + col * (photoWidth + padding);
+                const y = padding + row * (photoHeight + padding);
     
-                offCanvas.width = photoWidth;
-                offCanvas.height = photoHeight;
+                ctx.filter = filter; // Apply the filter directly before drawing
+                ctx.drawImage(img, x, y, photoWidth, photoHeight);
     
-                // Apply filter manually before drawing
-                offCtx.filter = filter;
-                offCtx.drawImage(img, 0, 0, photoWidth, photoHeight);
-    
-                // Get filtered image as new source
-                const tempImg = new Image();
-                tempImg.onload = () => {
-                    const col = index % cols;
-                    const row = Math.floor(index / cols);
-                    const x = padding + col * (photoWidth + padding);
-                    const y = padding + row * (photoHeight + padding);
-    
-                    ctx.drawImage(tempImg, x, y);
-    
-                    loadedImages++;
-                    if (loadedImages === images.length) {
-                        saveCanvas(canvas);
-                    }
-                };
-                tempImg.src = offCanvas.toDataURL(); // Ensures the filter is applied before drawing
+                loadedImages++;
+                if (loadedImages === images.length) {
+                    saveCanvas(canvas);
+                }
             };
         });
     
@@ -178,18 +163,12 @@ function Photobooth() {
         ctx.fillRect(0, height - blackBottomHeight, width, blackBottomHeight);
     };
     
+    
 
     const saveCanvas = (canvas) => {
-        setTimeout(() => {
-            canvas.toBlob((blob) => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    localStorage.setItem("photoStrip", reader.result);
-                    navigate("/preview");
-                };
-                reader.readAsDataURL(blob);
-            }, "image/png");
-        }, 100);
+        const dataURL = canvas.toDataURL("image/png"); // Save as base64 string
+        localStorage.setItem("photoStrip", dataURL);  // Store in localStorage
+        navigate("/preview");
     };
     useEffect(() => {
         const handleOrientationChange = () => {
