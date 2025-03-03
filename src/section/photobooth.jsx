@@ -180,9 +180,16 @@ function Photobooth() {
     
 
     const saveCanvas = (canvas) => {
-        const dataURL = canvas.toDataURL("image/png"); // Save as base64 string
-        localStorage.setItem("photoStrip", dataURL);  // Store in localStorage
-        navigate("/preview");
+        setTimeout(() => {
+            canvas.toBlob((blob) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    localStorage.setItem("photoStrip", reader.result);
+                    navigate("/preview");
+                };
+                reader.readAsDataURL(blob);
+            }, "image/png");
+        }, 100);
     };
     useEffect(() => {
         const handleOrientationChange = () => {
