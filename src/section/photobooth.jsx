@@ -1,11 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { useNavigate } from "react-router-dom";
+import { RefreshCcw } from "lucide-react"; // Importing an icon from Lucide
+
 
 
 function Photobooth() {
-    const navigate = useNavigate();
-
+     const navigate = useNavigate();
     const webcamRef = useRef(null);
     const [images, setImages] = useState([]);
     const [countdown, setCountdown] = useState(null);
@@ -15,10 +16,7 @@ function Photobooth() {
     const [timer, setTimer] = useState(3);
     const [filter, setFilter] = useState("none");
     const [step, setStep] = useState(1);
-
-    
-    const [isPortrait, setIsPortrait] = useState(window.matchMedia("(orientation: portrait)").matches);
-
+    const [isPortrait, setIsPortrait] = useState(window.innerWidth < window.innerHeight);
     
 
     const videoConstraints = { facingMode: "user" };
@@ -175,26 +173,22 @@ function Photobooth() {
         localStorage.setItem("photoStrip", dataURL);  // Store in localStorage
         navigate("/preview");
     };
-
     useEffect(() => {
         const handleOrientationChange = () => {
-            setIsPortrait(window.innerHeight > window.innerWidth);
+            setIsPortrait(window.innerWidth < window.innerHeight);
         };
-    
+
         window.addEventListener("resize", handleOrientationChange);
-        handleOrientationChange(); // Ensure it runs on mount
-    
         return () => window.removeEventListener("resize", handleOrientationChange);
     }, []);
-    
-    
+
     
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 ">
             <div>
                 <img src="images/click-n-pose.png" className="w-36" alt="" />
             </div>
-            <div className="relative w-full lg:max-w-lg sm:max-w-lg md:max-w-sm  lg:aspect-[4/3] md:aspect-[4/3] sm:aspect-[4/3] rounded-lg shadow-lg">
+            <div className="relative w-full lg:max-w-lg sm:max-w-sm md:max-w-sm  lg:aspect-[4/3] md:aspect-[4/3] sm:aspect-[4/3] rounded-lg shadow-lg">
                 <Webcam
                     ref={webcamRef}
                     screenshotFormat="image/png"
@@ -360,14 +354,12 @@ function Photobooth() {
             )}
 
             {isPortrait && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50 text-white text-center p-4">
-                    <div>
-                        <img src="/images/rotate.png" alt="Rotate Device" className="w-24 mx-auto mb-4 animate-spin-slow" />
-                        <p className="text-lg font-semibold">Please rotate your device</p>
-                        <p className="text-sm opacity-80">For a better experience, use landscape mode.</p>
-                    </div>
+                <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 text-white text-lg font-bold text-center p-4">
+                    <img src="images/landscape.png" className="w-12 mb-4" alt="" />
+                    Please rotate your device for the best experience.
                 </div>
             )}
+
         </div>
     );
 }
